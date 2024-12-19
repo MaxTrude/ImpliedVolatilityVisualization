@@ -21,6 +21,6 @@ this idea: Writing a script that visualizes the implied volatility surface by ca
 -	Using color-schemes in the plots for better differentiation
 -	Automating daily calculations to visualize the evolvement of implied volatility over time
 
-## Example using Google’s stock option data
+## Example using Google’s (symbol "GOOG") stock option data
 The script must be provided with a stock symbol, the current price of the stock, an anticipated risk-free interest rate and a lower bound for the time to maturity of options.
 For getting the data we use the Python-library “yFinance”, which fetches the data of call options on the passed symbol from the Yahoo! Finance API. When writing this, the Google stock moves around 185$ and the European Central Bank recently decreased the deposit rate to 3.00%, what will be our risk-free rate. We won’t restrict the example to options of a minimum time to maturity. However, this setting can help to control the points plotted when time to maturity runs towards zero.
