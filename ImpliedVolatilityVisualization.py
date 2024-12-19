@@ -3,13 +3,12 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import datetime
 import scipy.optimize as optimize
 import math
 
-pd.set_option('display.max_columns', None)  # Zeigt alle Spalten an
-
-
+## Packing task in one callable function
 def ImpliedVolatilityCallVisualization(symbol, current_asset_price, risk_free_rate, min_TimeToMaturity):
 
     tick = yf.Ticker(symbol) # Defining ticker in yFinance-syntax
@@ -91,30 +90,30 @@ def ImpliedVolatilityCallVisualization(symbol, current_asset_price, risk_free_ra
     timetomat_data = options_data["TimeToMaturity"]
     implied_vol = options_data["ImpliedVolatility"]
 
-    # Visualization of the implied volatility
+    ## Visualization of the implied volatility
     fig = plt.figure(figsize=(20, 20))
-    import matplotlib.gridspec as gridspec
-
-    # Gridspec erstellen: 3 Zeilen, 2 Spalten
+    
+    # Gridspec
     gs = gridspec.GridSpec(3, 2, height_ratios=[2, 2, 3])
-    #gs = gridspec.GridSpec(1, 2)
 
-    # Die oberen beiden 2D-Subplots
-    ax1 = fig.add_subplot(gs[0, 0])  # Oben links
-    ax2 = fig.add_subplot(gs[0, 1])  # Oben rechts
-    ax3 = fig.add_subplot(gs[1:, :], projection='3d')
+    # Plots in figure
+    ax1 = fig.add_subplot(gs[0, 0])  # Upper left
+    ax2 = fig.add_subplot(gs[0, 1])  # Upper right
+    ax3 = fig.add_subplot(gs[1:, :], projection='3d') # Bottom
 
+    # Upper left plot specification
     ax1.scatter(strike_data, implied_vol)
     ax1.set_xlabel('Strike-Price (in €)', fontsize=20)
     ax1.set_ylabel('Implied Volatility', fontsize=20)
     ax1.tick_params(axis='both', which='major', labelsize=15)
 
+    # Upper right plot specification
     ax2.scatter(timetomat_data,implied_vol )
     ax2.set_xlabel('Time to Maturity (in years)', fontsize=20)
     ax2.set_ylabel('Implied Volatility', fontsize=20)
     ax2.tick_params(axis='both', which='major', labelsize=15)
-
-
+    
+    # Bottom plot specification
     ax3.scatter(strike_data,timetomat_data,implied_vol)
     ax3.set_xlabel('Strike-Price\n(in €)', fontsize=20)
     ax3.set_ylabel('Time to Maturity\n(in years)', fontsize=20)
@@ -125,7 +124,7 @@ def ImpliedVolatilityCallVisualization(symbol, current_asset_price, risk_free_ra
     ax3.set_yticks(list(np.arange(0, 2.5, 0.5)))
     ax3.tick_params(axis='both', which='major', labelsize=15)
 
-
+    # Title and show plot
     fig.suptitle('Implied Volatility From Traded Call-Options On ' + str(symbol) + "\nas of " + str(datetime.datetime.today().strftime('%Y-%m-%d %H:%M')), fontsize=30, y=0.96)
     plt.show()
 
